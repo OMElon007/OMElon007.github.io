@@ -10,7 +10,11 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="' ****************************************创建/打开文件夹****************************************
+<meta name="description" content="## 创建/打开文件夹
+> Note
+>
+> #### 本段代码作用：
+``` VBA
 Private Sub Worksheet_SelectionChange(ByVal Target As Range)
     ' 创建String变量存储文件夹地址
     Dim folderPath As String
@@ -31,75 +35,22 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         ActiveWorkbook.FollowHyperlink Address:=fullPath, NewWindow:=True
         ' 如果成功打开文件夹，则退出子程序，后续代码不再执行
         Exit Sub
-
-CreateFolder:
-        ' 如果出错则继续执行，而不是中断
-        On Error Resume Next
-        ' 创建文件夹，已有则会出错
-        MkDir fullPath
-        '用资源管理器打开新建文件夹
-        Shell 'explorer.exe ' & fullPath, vbNormalFocus
-    End If
-End Sub
-' ****************************************点击链接打开并复制****************************************
-Private Sub Worksheet_FollowHyperlink(ByVal Target As Hyperlink)
-    ' 检查是否是 E 列
-    If Target.Range.Column = 5 Then
-        ' 获取显示的文字
-        Dim linkText As String
-        ' Hyperlink.TextToDisplay为超链接中显示的文字
-        linkText = Target.TextToDisplay
-
-        ' 复制显示的文字到剪贴板
-        ' 此处调用模块中的SetClipboardText过程
-        SetClipboardText linkText
-    End If
-End Sub
-' ****************************************分类高亮****************************************
-' 更新并重新计算C列公式
-Sub UpdateAndRecalculateColumnC()
-    Dim lastRow As Long
-    Dim i As Long
-    
-    ' 找到B列中的最后一行
-    ' Rows.count为当前活动工作表的最大行数，1048576
-    ' Cells(Rows.count, 'B')为定位到B列的最后一个格子，即单元格B1048576
-    ' End(xlUp):沿着B列最后一个格子，向上寻找第一次出现的非空单元格
-    ' .Row取行号
-    lastRow = Cells(Rows.count, 'B').End(xlUp).Row
-    
-    ' 从第 2 行开始循环，更新每行 C 列的公式
-    For i = 2 To lastRow
-        If Cells(i, 'A').Value <> '' And Cells(i, 'B').Value <> '' Then
-            ' 动态设置每行的C列公式
-            Cells(i, 'C').Formula = '=IF(B' & i - 1 & '=B' & i & ',C' & i - 1 & ',C' & i - 1 & '+1)'
-        End If
-    Next i
-    
-    ' 重新计算C列
-    Range('C:C').Calculate
-End Sub
-' 当A列或B列发生变化时自动触发UpdateAndRecalculateColumnC更新并重新计算C、H列公式
-Private Sub Worksheet_Change(ByVal Target As Range)
-    ' 检查是否在A列或B列中更改了单元格
-    If Not Intersect(Target, Me.Columns('A')) Is Nothing Or Not Intersect(Target, Me.Columns('B')) Is Nothing Then
-        Dim rowNum As Long
-        rowNum = Target.Row
-        
-        ' 确保当前行A列和B列都有值，且不是第一行
-        If rowNum > 1 And Cells(rowNum, 'A').Value <> '' And Cells(rowNum, 'B').Value <> '' Then
-            ' 设置H列的公式
-            Cells(rowNum, 'H').Formula = '=HYPERLINK($H$1&B' & rowNum & '&'' ''&D' & rowNum & ', $D$1)'
-            Cells(rowNum, 'H').Font.Color = Cells(rowNum - 1, 'H').Font.Color
-            Cells(rowNum, 'H').Font.Underline = xlUnderlineStyleNone ' 移除下划线
-            
-            ' 调用UpdateAndRecalculateColumnC，更新C列公式并重新计算
-            UpdateAndRecalculateColumnC
-        End If
-    End If
-End Sub。">
+  CreateFolder:
+          ' 如果出错则继续执行，而不是中断
+          On Error Resume Next
+          ' 创建文件夹，已有则会出错
+          MkDir fullPath
+          '用资源管理器打开新建文件夹
+          Shell 'explorer.exe ' & fullPath, vbNormalFocus
+      End If
+  End Sub
+```。">
 <meta property="og:title" content="VBA 1">
-<meta property="og:description" content="' ****************************************创建/打开文件夹****************************************
+<meta property="og:description" content="## 创建/打开文件夹
+> Note
+>
+> #### 本段代码作用：
+``` VBA
 Private Sub Worksheet_SelectionChange(ByVal Target As Range)
     ' 创建String变量存储文件夹地址
     Dim folderPath As String
@@ -120,78 +71,21 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         ActiveWorkbook.FollowHyperlink Address:=fullPath, NewWindow:=True
         ' 如果成功打开文件夹，则退出子程序，后续代码不再执行
         Exit Sub
-
-CreateFolder:
-        ' 如果出错则继续执行，而不是中断
-        On Error Resume Next
-        ' 创建文件夹，已有则会出错
-        MkDir fullPath
-        '用资源管理器打开新建文件夹
-        Shell 'explorer.exe ' & fullPath, vbNormalFocus
-    End If
-End Sub
-' ****************************************点击链接打开并复制****************************************
-Private Sub Worksheet_FollowHyperlink(ByVal Target As Hyperlink)
-    ' 检查是否是 E 列
-    If Target.Range.Column = 5 Then
-        ' 获取显示的文字
-        Dim linkText As String
-        ' Hyperlink.TextToDisplay为超链接中显示的文字
-        linkText = Target.TextToDisplay
-
-        ' 复制显示的文字到剪贴板
-        ' 此处调用模块中的SetClipboardText过程
-        SetClipboardText linkText
-    End If
-End Sub
-' ****************************************分类高亮****************************************
-' 更新并重新计算C列公式
-Sub UpdateAndRecalculateColumnC()
-    Dim lastRow As Long
-    Dim i As Long
-    
-    ' 找到B列中的最后一行
-    ' Rows.count为当前活动工作表的最大行数，1048576
-    ' Cells(Rows.count, 'B')为定位到B列的最后一个格子，即单元格B1048576
-    ' End(xlUp):沿着B列最后一个格子，向上寻找第一次出现的非空单元格
-    ' .Row取行号
-    lastRow = Cells(Rows.count, 'B').End(xlUp).Row
-    
-    ' 从第 2 行开始循环，更新每行 C 列的公式
-    For i = 2 To lastRow
-        If Cells(i, 'A').Value <> '' And Cells(i, 'B').Value <> '' Then
-            ' 动态设置每行的C列公式
-            Cells(i, 'C').Formula = '=IF(B' & i - 1 & '=B' & i & ',C' & i - 1 & ',C' & i - 1 & '+1)'
-        End If
-    Next i
-    
-    ' 重新计算C列
-    Range('C:C').Calculate
-End Sub
-' 当A列或B列发生变化时自动触发UpdateAndRecalculateColumnC更新并重新计算C、H列公式
-Private Sub Worksheet_Change(ByVal Target As Range)
-    ' 检查是否在A列或B列中更改了单元格
-    If Not Intersect(Target, Me.Columns('A')) Is Nothing Or Not Intersect(Target, Me.Columns('B')) Is Nothing Then
-        Dim rowNum As Long
-        rowNum = Target.Row
-        
-        ' 确保当前行A列和B列都有值，且不是第一行
-        If rowNum > 1 And Cells(rowNum, 'A').Value <> '' And Cells(rowNum, 'B').Value <> '' Then
-            ' 设置H列的公式
-            Cells(rowNum, 'H').Formula = '=HYPERLINK($H$1&B' & rowNum & '&'' ''&D' & rowNum & ', $D$1)'
-            Cells(rowNum, 'H').Font.Color = Cells(rowNum - 1, 'H').Font.Color
-            Cells(rowNum, 'H').Font.Underline = xlUnderlineStyleNone ' 移除下划线
-            
-            ' 调用UpdateAndRecalculateColumnC，更新C列公式并重新计算
-            UpdateAndRecalculateColumnC
-        End If
-    End If
-End Sub。">
+  CreateFolder:
+          ' 如果出错则继续执行，而不是中断
+          On Error Resume Next
+          ' 创建文件夹，已有则会出错
+          MkDir fullPath
+          '用资源管理器打开新建文件夹
+          Shell 'explorer.exe ' & fullPath, vbNormalFocus
+      End If
+  End Sub
+```。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://OMElon007.github.io/post/VBA%201.html">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/186453953?v=4">
 <title>VBA 1</title>
-
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 
 </head>
@@ -257,93 +151,40 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
 </div>
     <div id="content">
-<div class="markdown-body" id="postBody"><p>' <strong>创建/打开文件夹</strong><br>
-Private Sub Worksheet_SelectionChange(ByVal Target As Range)<br>
-' 创建String变量存储文件夹地址<br>
-Dim folderPath As String<br>
-' 创建String变量存储打开文件夹地址<br>
-Dim fullPath As String</p>
-<pre class="notranslate"><code class="notranslate">' 确保只在点击 H 列单元格时执行
-If Not Intersect(Target, Me.Columns("H")) Is Nothing And Target.Cells.count = 1 Then
-    ' 获取文件夹路径
-    folderPath = Me.Range("H1").Value
-    ' 构建完整路径，使用对应行的 B 列和 D 列的值
-    fullPath = folderPath &amp; Me.Cells(Target.Row, 2).Value &amp; " " &amp; Me.Cells(Target.Row, 4).Value
-    
-    ' 若无法打开文件夹则跳到CreateFolder标签
-    On Error GoTo CreateFolder
-    ' 尝试打开文件夹
-    ' ActiveWorkbook指当前活动工作簿
-    ActiveWorkbook.FollowHyperlink Address:=fullPath, NewWindow:=True
-    ' 如果成功打开文件夹，则退出子程序，后续代码不再执行
-    Exit Sub
-</code></pre>
-<p>CreateFolder:<br>
-' 如果出错则继续执行，而不是中断<br>
-On Error Resume Next<br>
-' 创建文件夹，已有则会出错<br>
-MkDir fullPath<br>
-'用资源管理器打开新建文件夹<br>
-Shell "explorer.exe " &amp; fullPath, vbNormalFocus<br>
-End If<br>
-End Sub<br>
-' <strong>点击链接打开并复制</strong><br>
-Private Sub Worksheet_FollowHyperlink(ByVal Target As Hyperlink)<br>
-' 检查是否是 E 列<br>
-If Target.Range.Column = 5 Then<br>
-' 获取显示的文字<br>
-Dim linkText As String<br>
-' Hyperlink.TextToDisplay为超链接中显示的文字<br>
-linkText = Target.TextToDisplay</p>
-<pre class="notranslate"><code class="notranslate">    ' 复制显示的文字到剪贴板
-    ' 此处调用模块中的SetClipboardText过程
-    SetClipboardText linkText
-End If
-</code></pre>
-<p>End Sub<br>
-' <strong>分类高亮</strong><br>
-' 更新并重新计算C列公式<br>
-Sub UpdateAndRecalculateColumnC()<br>
-Dim lastRow As Long<br>
-Dim i As Long</p>
-<pre class="notranslate"><code class="notranslate">' 找到B列中的最后一行
-' Rows.count为当前活动工作表的最大行数，1048576
-' Cells(Rows.count, "B")为定位到B列的最后一个格子，即单元格B1048576
-' End(xlUp):沿着B列最后一个格子，向上寻找第一次出现的非空单元格
-' .Row取行号
-lastRow = Cells(Rows.count, "B").End(xlUp).Row
+<div class="markdown-body" id="postBody"><h2>创建/打开文件夹</h2>
+<blockquote>
+<p>Note</p>
+<h4>本段代码作用：</h4>
+</blockquote>
+<div class="highlight highlight-source-vba"><pre class="notranslate"><span class="pl-k">Private</span> <span class="pl-k">Sub</span> Worksheet_SelectionChange(<span class="pl-k">ByVal</span> Target <span class="pl-k">As</span> <span class="pl-c1">Range</span>)
+    <span class="pl-c">' 创建String变量存储文件夹地址</span>
+    <span class="pl-k">Dim</span> folderPath <span class="pl-k">As</span> <span class="pl-c1">String</span>
+    <span class="pl-c">' 创建String变量存储打开文件夹地址</span>
+    <span class="pl-k">Dim</span> fullPath <span class="pl-k">As</span> <span class="pl-c1">String</span>
 
-' 从第 2 行开始循环，更新每行 C 列的公式
-For i = 2 To lastRow
-    If Cells(i, "A").Value &lt;&gt; "" And Cells(i, "B").Value &lt;&gt; "" Then
-        ' 动态设置每行的C列公式
-        Cells(i, "C").Formula = "=IF(B" &amp; i - 1 &amp; "=B" &amp; i &amp; ",C" &amp; i - 1 &amp; ",C" &amp; i - 1 &amp; "+1)"
-    End If
-Next i
-
-' 重新计算C列
-Range("C:C").Calculate
-</code></pre>
-<p>End Sub<br>
-' 当A列或B列发生变化时自动触发UpdateAndRecalculateColumnC更新并重新计算C、H列公式<br>
-Private Sub Worksheet_Change(ByVal Target As Range)<br>
-' 检查是否在A列或B列中更改了单元格<br>
-If Not Intersect(Target, Me.Columns("A")) Is Nothing Or Not Intersect(Target, Me.Columns("B")) Is Nothing Then<br>
-Dim rowNum As Long<br>
-rowNum = Target.Row</p>
-<pre class="notranslate"><code class="notranslate">    ' 确保当前行A列和B列都有值，且不是第一行
-    If rowNum &gt; 1 And Cells(rowNum, "A").Value &lt;&gt; "" And Cells(rowNum, "B").Value &lt;&gt; "" Then
-        ' 设置H列的公式
-        Cells(rowNum, "H").Formula = "=HYPERLINK($H$1&amp;B" &amp; rowNum &amp; "&amp;"" ""&amp;D" &amp; rowNum &amp; ", $D$1)"
-        Cells(rowNum, "H").Font.Color = Cells(rowNum - 1, "H").Font.Color
-        Cells(rowNum, "H").Font.Underline = xlUnderlineStyleNone ' 移除下划线
+    <span class="pl-c">' 确保只在点击 H 列单元格时执行</span>
+    <span class="pl-k">If</span> <span class="pl-k">Not</span> Intersect(Target, Me.Columns(<span class="pl-s">"H"</span>)) <span class="pl-k">Is</span> <span class="pl-c1">Nothing</span> <span class="pl-k">And</span> Target.Cells.count = <span class="pl-c1">1</span> <span class="pl-k">Then</span>
+        <span class="pl-c">' 获取文件夹路径</span>
+        folderPath = Me.Range(<span class="pl-s">"H1"</span>).Value
+        <span class="pl-c">' 构建完整路径，使用对应行的 B 列和 D 列的值</span>
+        fullPath = folderPath &amp; Me.Cells(Target.Row, <span class="pl-c1">2</span>).Value &amp; <span class="pl-s">" "</span> &amp; Me.Cells(Target.Row, <span class="pl-c1">4</span>).Value
         
-        ' 调用UpdateAndRecalculateColumnC，更新C列公式并重新计算
-        UpdateAndRecalculateColumnC
-    End If
-End If
-</code></pre>
-<p>End Sub</p></div>
+        <span class="pl-c">' 若无法打开文件夹则跳到CreateFolder标签</span>
+        <span class="pl-k">On Error</span> <span class="pl-k">GoTo</span> CreateFolder
+        <span class="pl-c">' 尝试打开文件夹</span>
+        <span class="pl-c">' ActiveWorkbook指当前活动工作簿</span>
+        ActiveWorkbook.FollowHyperlink Address:=fullPath, NewWindow:=<span class="pl-c1">True</span>
+        <span class="pl-c">' 如果成功打开文件夹，则退出子程序，后续代码不再执行</span>
+        <span class="pl-k">Exit Sub</span>
+  CreateFolder:
+          <span class="pl-c">' 如果出错则继续执行，而不是中断</span>
+          <span class="pl-k">On Error</span> <span class="pl-k">Resume Next</span>
+          <span class="pl-c">' 创建文件夹，已有则会出错</span>
+          MkDir fullPath
+          <span class="pl-c">'用资源管理器打开新建文件夹</span>
+          Shell <span class="pl-s">"explorer.exe "</span> &amp; fullPath, vbNormalFocus
+      <span class="pl-k">End If</span>
+  <span class="pl-k">End Sub</span></pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
